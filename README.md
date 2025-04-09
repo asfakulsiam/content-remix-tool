@@ -33,7 +33,7 @@ To run this project locally, ensure that you have the following installed:
 
 - **Node.js** (version 16 or higher)
 - **npm** (or Yarn)
-- **OpenAI API Key**: You’ll need to sign up at [OpenAI](https://platform.openai.com/signup) and get an API key.
+- **OpenAI API Key**: You’ll need to sign up at [OpenRouterAI](https://openrouter.ai/settings/keys) and get an API key.
 
 ---
 
@@ -42,7 +42,7 @@ To run this project locally, ensure that you have the following installed:
 1. Clone this repository:
 
     ```bash
-    git clone https://github.com/yourusername/content-remix-tool.git
+    git clone https://github.com/asfakulsiam/content-remix-tool.git
     cd content-remix-tool
     ```
 
@@ -93,12 +93,3 @@ Click "Remix Content" to generate a new version of your input content using the 
 Once you're happy with the remix, you can easily copy it to your clipboard or share it directly via supported platforms.
 
 ---
-
-## API Integration
-
-This project leverages the OpenAI API to remix content. You can integrate this into your own projects by following the steps below.
-
-### API Endpoint
-
-The main API endpoint for generating remixed content is:
-
