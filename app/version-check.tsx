@@ -7,12 +7,12 @@ export default function VersionCheck() {
   const { toast } = useToast();
 
   useEffect(() => {
-    try {
-      const currentVersion = "0.01.2-beta";
-      const lastVersion = localStorage.getItem("app_version");
+    const currentVersion = "0.02.2-beta";
+    const lastVersion = localStorage.getItem("app_version");
 
-      // Show toast only if the version has changed
-      if (!lastVersion || lastVersion !== currentVersion) {
+    if (!lastVersion || lastVersion !== currentVersion) {
+      // Delay the toast so the system has time to mount
+      const timeout = setTimeout(() => {
         toast({
           title: `Updated to version ${currentVersion}! 🎉`,
           description:
@@ -21,9 +21,9 @@ export default function VersionCheck() {
         });
 
         localStorage.setItem("app_version", currentVersion);
-      }
-    } catch (error) {
-      console.log("Version check error (ignored):", error);
+      }, 100);
+
+      return () => clearTimeout(timeout);
     }
   }, [toast]);
 
