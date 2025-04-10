@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 import { useEffect } from "react"
 
 export default function InputArea() {
-  const { originalContent, setOriginalContent } = useRemix()
+  const { originalContent, setOriginalContent, clearAll } = useRemix()
 
   // Load from localStorage if available
   useEffect(() => {
@@ -27,7 +27,7 @@ export default function InputArea() {
     <div className="space-y-4">
       <div className="flex justify-between items-center">
         <h2 className="text-xl font-bold">Your Content</h2>
-        <Button variant="outline" size="sm" onClick={() => setOriginalContent("")} disabled={!originalContent}>
+        <Button variant="outline" size="sm" onClick={clearAll} disabled={!originalContent}>
           Clear
         </Button>
       </div>

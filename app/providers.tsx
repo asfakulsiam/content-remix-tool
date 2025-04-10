@@ -1,7 +1,6 @@
 "use client"
 
 import type React from "react"
-
 import { ThemeProvider } from "@/components/theme-provider"
 import { RemixProvider } from "@/context/remix-context"
 import { Toaster } from "@/components/ui/toaster"

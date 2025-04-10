@@ -1,11 +1,12 @@
-import type React from "react"
-import { Inter } from "next/font/google"
-import "./globals.css"
-import Navbar from "@/components/navbar"
-import Footer from "@/components/footer"
-import { Providers } from "./providers"
+import type React from "react";
+import { Inter } from "next/font/google";
+import "./globals.css";
+import Navbar from "@/components/navbar";
+import Footer from "@/components/footer";
+import { Providers } from "./providers";
+import ClientWrapper from "./ClientWrapper"; // ✅ Import this instead
 
-const inter = Inter({ subsets: ["latin"] })
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   title: "Content Remix Tool",
@@ -14,13 +15,13 @@ export const metadata = {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
   },
-    generator: 'v0.dev'
-}
+  generator: "v0.dev",
+};
 
 export default function RootLayout({
   children,
 }: {
-  children: React.ReactNode
+  children: React.ReactNode;
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
@@ -31,11 +32,10 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
+          {/* ✅ Moved VersionCheck into ClientWrapper so it runs only on client */}
+          {process.env.NODE_ENV === "production" && <ClientWrapper />}
         </Providers>
       </body>
     </html>
-  )
+  );
 }
-
-
-import './globals.css'
