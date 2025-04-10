@@ -1,14 +1,20 @@
-"use client"
+"use client";
 
-import { useRemix } from "@/context/remix-context"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Copy } from "lucide-react"
-import { useToast } from "@/hooks/use-toast"
+import { useRemix } from "@/context/remix-context";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Copy } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function ResultCard() {
-  const { remixedContent, selectedFormat, isLoading } = useRemix()
-  const { toast } = useToast()
+  const { remixedContent, selectedFormat, isLoading } = useRemix();
+  const { toast } = useToast();
 
   const formatTitles = {
     tweet: "Tweet",
@@ -16,17 +22,17 @@ export default function ResultCard() {
     linkedin: "LinkedIn Post",
     youtube: "YouTube Script",
     faq: "FAQ Summary",
-  }
+  };
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(remixedContent)
+    navigator.clipboard.writeText(remixedContent);
     toast({
       title: "Copied to clipboard",
       description: "Your remixed content has been copied to clipboard.",
-    })
-  }
+    });
+  };
 
-  if (!remixedContent && !isLoading) return null
+  if (!remixedContent && !isLoading) return null;
 
   return (
     <Card className="w-full">
@@ -51,5 +57,5 @@ export default function ResultCard() {
         </CardFooter>
       )}
     </Card>
-  )
+  );
 }
