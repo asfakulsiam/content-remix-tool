@@ -72,6 +72,9 @@ export async function POST(req: Request) {
       }
     );
 
+    // Log raw response to debug in production
+    const rawResponse = await response.text(); // Capture as text first to log
+
     // Check if the response is successful
     if (!response.ok) {
       const contentType = response.headers.get("content-type");
@@ -80,22 +83,20 @@ export async function POST(req: Request) {
         const errorData = await response.json();
         console.error("OpenRouter API error:", errorData);
       } else {
-        const textError = await response.text();
-        console.error("OpenRouter API error (non-JSON):", textError);
+        console.error("OpenRouter API error (non-JSON):", rawResponse);
       }
 
       throw new Error(`OpenRouter API error: ${response.status}`);
     }
 
-    // Parse the API response and extract the result
-    const data = await response.json();
+    // Now try parsing the response if it's valid JSON
+    const data = JSON.parse(rawResponse); // Parse the raw response
     const result = data.choices[0].message.content;
 
     // Return the result in the response
     return NextResponse.json({ result });
   } catch (error) {
     // Log the error and return a failure response
-    console.error("Error remixing content:", error);
     return NextResponse.json(
       { error: "Failed to remix content. Please try again later." },
       { status: 500 }
