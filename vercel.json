@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/remix-content.ts": {
+      "maxDuration": 30
+    }
+  }
+}

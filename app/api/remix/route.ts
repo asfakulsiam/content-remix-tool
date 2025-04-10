@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
 
-// Define prompt templates for different formats
 const promptTemplates = {
   tweet:
     "Transform the following content into a concise, engaging tweet (or thread of 2-3 tweets if needed). Use hashtags appropriately and make it attention-grabbing while maintaining the core message:",
@@ -14,7 +13,6 @@ const promptTemplates = {
 
 export async function POST(req: Request) {
   try {
-    // Check if API key is available
     if (!process.env.OPENROUTERAI_API_KEY) {
       return NextResponse.json(
         {
@@ -25,7 +23,6 @@ export async function POST(req: Request) {
       );
     }
 
-    // Extract the content and format from the request body
     const { content, format } = await req.json();
 
     if (!content || !format) {
@@ -35,12 +32,10 @@ export async function POST(req: Request) {
       );
     }
 
-    // Validate format
     const prompt =
       promptTemplates[format as keyof typeof promptTemplates] ||
-      promptTemplates.tweet; // Default to tweet if format is invalid
+      promptTemplates.tweet;
 
-    // Prepare the request payload for the API
     const requestBody = {
       model: "openai/gpt-4o-mini",
       messages: [
@@ -57,7 +52,6 @@ export async function POST(req: Request) {
       max_tokens: 1000,
     };
 
-    // Make the API request to OpenRouter
     const response = await fetch(
       "https://openrouter.ai/api/v1/chat/completions",
       {
@@ -72,10 +66,8 @@ export async function POST(req: Request) {
       }
     );
 
-    // Log raw response to debug in production
-    const rawResponse = await response.text(); // Capture as text first to log
+    const rawResponse = await response.text();
 
-    // Check if the response is successful
     if (!response.ok) {
       const contentType = response.headers.get("content-type");
 
@@ -89,14 +81,19 @@ export async function POST(req: Request) {
       throw new Error(`OpenRouter API error: ${response.status}`);
     }
 
-    // Now try parsing the response if it's valid JSON
-    const data = JSON.parse(rawResponse); // Parse the raw response
+    let data;
+    try {
+      data = JSON.parse(rawResponse);
+    } catch (parseError) {
+      console.error("Error parsing response as JSON:", rawResponse);
+      throw new Error("Failed to parse response from OpenRouter API.");
+    }
+
     const result = data.choices[0].message.content;
 
-    // Return the result in the response
     return NextResponse.json({ result });
   } catch (error) {
-    // Log the error and return a failure response
+    console.error("Error remixing content:", error);
     return NextResponse.json(
       { error: "Failed to remix content. Please try again later." },
       { status: 500 }

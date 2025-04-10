@@ -7,7 +7,7 @@ export default function VersionCheck() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const currentVersion = "0.02.3-beta";
+    const currentVersion = "1.0.0aKc9-siam";
     const lastVersion = localStorage.getItem("app_version");
 
     if (!lastVersion || lastVersion !== currentVersion) {
