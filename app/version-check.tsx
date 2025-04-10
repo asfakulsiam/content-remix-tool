@@ -8,7 +8,7 @@ export default function VersionCheck() {
 
   useEffect(() => {
     try {
-      const currentVersion = "0.0.1-beta";
+      const currentVersion = "0.01.2-beta";
       const lastVersion = localStorage.getItem("app_version");
 
       // Show toast only if the version has changed

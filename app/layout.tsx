@@ -7,6 +7,7 @@ import { Providers } from "./providers";
 import ClientWrapper from "./ClientWrapper";
 import { ToastContainer } from "react-toastify"; // Import ToastContainer if using react-toastify
 import "react-toastify/dist/ReactToastify.css"; // Import CSS for react-toastify
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,6 +37,7 @@ export default function RootLayout({
           </div>
           {/* Only render ClientWrapper in production */}
           {process.env.NODE_ENV === "production" && <ClientWrapper />}
+          <Toaster />
         </Providers>
         <ToastContainer /> {/* Ensure ToastContainer is included */}
       </body>
