@@ -8,10 +8,10 @@ export default function VersionCheck() {
 
   useEffect(() => {
     try {
-      const currentVersion = "0.0.1.1-beta"; // Set your current version here
+      const currentVersion = "0.0.1-beta";
       const lastVersion = localStorage.getItem("app_version");
 
-      // If there's no previous version or if it's different from the current version
+      // Show toast only if the version has changed
       if (!lastVersion || lastVersion !== currentVersion) {
         toast({
           title: `Updated to version ${currentVersion}! 🎉`,
@@ -20,7 +20,6 @@ export default function VersionCheck() {
           duration: 5000,
         });
 
-        // Store the new version in localStorage after the toast
         localStorage.setItem("app_version", currentVersion);
       }
     } catch (error) {

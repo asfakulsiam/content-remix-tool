@@ -4,7 +4,9 @@ import "./globals.css";
 import Navbar from "@/components/navbar";
 import Footer from "@/components/footer";
 import { Providers } from "./providers";
-import ClientWrapper from "./ClientWrapper"; // ✅ Import this instead
+import ClientWrapper from "./ClientWrapper";
+import { ToastContainer } from "react-toastify"; // Import ToastContainer if using react-toastify
+import "react-toastify/dist/ReactToastify.css"; // Import CSS for react-toastify
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,9 +34,10 @@ export default function RootLayout({
             <main className="flex-1">{children}</main>
             <Footer />
           </div>
-          {/* ✅ Moved VersionCheck into ClientWrapper so it runs only on client */}
+          {/* Only render ClientWrapper in production */}
           {process.env.NODE_ENV === "production" && <ClientWrapper />}
         </Providers>
+        <ToastContainer /> {/* Ensure ToastContainer is included */}
       </body>
     </html>
   );
