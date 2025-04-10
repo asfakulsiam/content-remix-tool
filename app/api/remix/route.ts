@@ -11,6 +11,47 @@ const promptTemplates = {
   faq: "Based on the following content, create a FAQ section with 5 questions and answers that would be most relevant to someone interested in this topic:",
 };
 
+const retryRequest = async (
+  url: string,
+  options: RequestInit,
+  retries: number = 3,
+  delay: number = 1000
+) => {
+  let attempt = 0;
+
+  while (attempt < retries) {
+    try {
+      const response = await fetch(url, options);
+
+      if (!response.ok) {
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+          const errorData = await response.json();
+          console.error("OpenRouter API error:", errorData);
+        } else {
+          const textError = await response.text();
+          console.error("OpenRouter API error (non-JSON):", textError);
+        }
+        throw new Error(`OpenRouter API error: ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      attempt += 1;
+      console.error(`Attempt ${attempt} failed: ${error.message}`);
+
+      if (attempt < retries) {
+        console.log(`Retrying in ${delay}ms...`);
+        await new Promise((resolve) => setTimeout(resolve, delay));
+      } else {
+        throw new Error(
+          "Maximum retries reached. Could not get a valid response."
+        );
+      }
+    }
+  }
+};
+
 export async function POST(req: Request) {
   try {
     if (!process.env.OPENROUTERAI_API_KEY) {
@@ -52,42 +93,21 @@ export async function POST(req: Request) {
       max_tokens: 1000,
     };
 
-    const response = await fetch(
+    const fetchOptions = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${process.env.OPENROUTERAI_API_KEY}`,
+        "HTTP-Referer": "https://content-remix-tool.vercel.app",
+        "X-Title": "Content Remix Tool",
+      },
+      body: JSON.stringify(requestBody),
+    };
+
+    const data = await retryRequest(
       "https://openrouter.ai/api/v1/chat/completions",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${process.env.OPENROUTERAI_API_KEY}`,
-          "HTTP-Referer": "https://content-remix-tool.vercel.app",
-          "X-Title": "Content Remix Tool",
-        },
-        body: JSON.stringify(requestBody),
-      }
+      fetchOptions
     );
-
-    const rawResponse = await response.text();
-
-    if (!response.ok) {
-      const contentType = response.headers.get("content-type");
-
-      if (contentType && contentType.includes("application/json")) {
-        const errorData = await response.json();
-        console.error("OpenRouter API error:", errorData);
-      } else {
-        console.error("OpenRouter API error (non-JSON):", rawResponse);
-      }
-
-      throw new Error(`OpenRouter API error: ${response.status}`);
-    }
-
-    let data;
-    try {
-      data = JSON.parse(rawResponse);
-    } catch (parseError) {
-      console.error("Error parsing response as JSON:", rawResponse);
-      throw new Error("Failed to parse response from OpenRouter API.");
-    }
 
     const result = data.choices[0].message.content;
 
