@@ -7,16 +7,14 @@ export default function VersionCheck() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const currentVersion = "1.0.MokhlesUr";
+    const currentVersion = "1.0-sIaa4M";
     const lastVersion = localStorage.getItem("app_version");
 
     if (!lastVersion || lastVersion !== currentVersion) {
-      // Delay the toast so the system has time to mount
       const timeout = setTimeout(() => {
         toast({
           title: `Updated to version ${currentVersion}! 🎉`,
-          description:
-            "hello mokhlesur its your buddy siam,, how was the surprise",
+          description: "Updated Server and AI Managements.",
           duration: 5000,
         });
 
