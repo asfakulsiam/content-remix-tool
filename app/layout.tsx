@@ -16,7 +16,7 @@ export const metadata = {
     icon: "/favicon.ico",
     apple: "/apple-icon.png",
   },
-  generator: "v0.dev",
+  generator: "Asfakkul Islam Siam",
 };
 
 export default function RootLayout({
