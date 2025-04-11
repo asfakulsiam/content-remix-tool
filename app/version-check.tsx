@@ -7,7 +7,7 @@ export default function VersionCheck() {
   const { toast } = useToast();
 
   useEffect(() => {
-    const currentVersion = "1.0.0aQc9-siam";
+    const currentVersion = "1.0.MokhlesUr";
     const lastVersion = localStorage.getItem("app_version");
 
     if (!lastVersion || lastVersion !== currentVersion) {
@@ -16,7 +16,7 @@ export default function VersionCheck() {
         toast({
           title: `Updated to version ${currentVersion}! 🎉`,
           description:
-            "YouTube remix fixed! 🎬 Now you can save your remixes, revisit them anytime from 'Recent Remixes', and delete the ones you don't need. Remixes are stored locally for 7 days. Enjoy the upgrade! 🚀",
+            "hello mokhlesur its your buddy siam,, how was the surprise",
           duration: 5000,
         });
 
